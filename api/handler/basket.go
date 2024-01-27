@@ -2,12 +2,24 @@ package handler
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 	"test/api/models"
-)
 
+	"github.com/gin-gonic/gin"
+)
+// CreateBasket godoc
+// @Router       /basket [POST]
+// @Summary      Creates a new basket
+// @Description  create a new basket
+// @Tags         basket
+// @Accept       json
+// @Produce      json
+// @Param        basket body models.CreateUser false "basket"
+// @Success      201  {object}  models.Basket
+// @Failure      400  {object}  models.Response
+// @Failure      404  {object}  models.Response
+// @Failure      500  {object}  models.Response
 func (h Handler) CreateBasket(c *gin.Context) {
 	createBasket := models.CreateBasket{}
 
@@ -29,7 +41,18 @@ func (h Handler) CreateBasket(c *gin.Context) {
 	}
 	handleResponse(c, "", http.StatusCreated, res)
 }
-
+// GetBasket godoc
+// @Router       /basket/{id} [GET]
+// @Summary      Gets basket
+// @Description  get basket by ID
+// @Tags         basket
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "basket"
+// @Success      200  {object}  models.Bakset
+// @Failure      400  {object}  models.Response
+// @Failure      404  {object}  models.Response
+// @Failure      500  {object}  models.Response
 func (h Handler) GetBasket(c *gin.Context) {
 	var err error
 	fmt.Println("came here")
@@ -44,7 +67,20 @@ func (h Handler) GetBasket(c *gin.Context) {
 
 	handleResponse(c, "", http.StatusOK, basket)
 }
-
+// GetBasketList godoc
+// @Router       /baskets [GET]
+// @Summary      Get basket list
+// @Description  get basket list
+// @Tags         usebasketr
+// @Accept       json
+// @Produce      json
+// @Param        page query string false "page"
+// @Param 		 limit query string false "limit"
+// @Param 		 search query string false "search"
+// @Success      200  {object}  models.BasketsResponse
+// @Failure      400  {object}  models.Response
+// @Failure      404  {object}  models.Response
+// @Failure      500  {object}  models.Response
 func (h Handler) GetBasketList(c *gin.Context) {
 	var (
 		page, limit int
@@ -80,7 +116,19 @@ func (h Handler) GetBasketList(c *gin.Context) {
 
 	handleResponse(c, "", http.StatusOK, baskets)
 }
-
+// UpdateBasket godoc
+// @Router       /basket/{id} [PUT]
+// @Summary      Update basket
+// @Description  update basket
+// @Tags         basket
+// @Accept       json
+// @Produce      json
+// @Param 		 id path string true "basket_id"
+// @Param        basket body models.UpdateBasket true "basket"
+// @Success      200  {object}  models.Basket
+// @Failure      400  {object}  models.Response
+// @Failure      404  {object}  models.Response
+// @Failure      500  {object}  models.Response
 func (h Handler) UpdateBasket(c *gin.Context) {
 	updatedBasket := models.UpdateBasket{}
 
@@ -106,7 +154,18 @@ func (h Handler) UpdateBasket(c *gin.Context) {
 
 	handleResponse(c, "", http.StatusOK, res)
 }
-
+// DeleteBasket godoc
+// @Router       /basket/{id} [DELETE]
+// @Summary      Delete basket
+// @Description  delete basket
+// @Tags         basket
+// @Accept       json
+// @Produce      json
+// @Param 		 id path string true "basket_id"
+// @Success      200  {object}  models.Response
+// @Failure      400  {object}  models.Response
+// @Failure      404  {object}  models.Response
+// @Failure      500  {object}  models.Response
 func (h Handler) DeleteBasket(c *gin.Context) {
 	uid := c.Param("id")
 

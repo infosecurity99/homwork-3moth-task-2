@@ -17,26 +17,26 @@ func New(store storage.IStorage) *gin.Engine {
 	h := handler.New(store)
 
 	r := gin.New()
-
+//finish user
 	r.POST("/user", h.CreateUser)
 	r.GET("/user/:id", h.GetUser)
 	r.GET("/users", h.GetUserList)
 	r.PUT("/user/:id", h.UpdateUser)
 	r.DELETE("/user/:id", h.DeleteUser)
 	r.PATCH("/user/:id", h.UpdateUserPassword)
-
+//finish category
 	r.POST("/category", h.CreateCategory)
 	r.GET("/category/:id", h.GetCategory)
 	r.GET("/categories", h.GetCategoryList)
 	r.PUT("/category/:id", h.UpdateCategory)
 	r.DELETE("/category/:id", h.DeleteCategory)
-
+//finish product
 	r.POST("/product", h.CreateProduct)
 	r.GET("/product/:id", h.GetProduct)
 	r.GET("/products", h.GetProductList)
 	r.PUT("/product/:id", h.UpdateProduct)
 	r.DELETE("/product/:id", h.DeleteProduct)
-
+//finish basket
 	r.POST("/basket", h.CreateBasket)
 	r.GET("/basket/:id", h.GetBasket)
 	r.GET("/basket", h.GetBasketList)
