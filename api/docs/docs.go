@@ -34,7 +34,7 @@ const docTemplate = `{
                         "name": "basket",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/models.CreateUser"
+                            "$ref": "#/definitions/models.CreateBasket"
                         }
                     }
                 ],
@@ -240,7 +240,7 @@ const docTemplate = `{
                         "name": "basketProduct",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/models.CreateUser"
+                            "$ref": "#/definitions/models.CreateBasketProduct"
                         }
                     }
                 ],
@@ -336,7 +336,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "basketProduct-id",
+                        "description": "basketProduct_id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -355,7 +355,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.BasketProduct"
+                            "$ref": "#/definitions/models.UpdateBasketProduct"
                         }
                     },
                     "400": {
@@ -437,7 +437,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "usbasketProducter"
+                    "basketProduct"
                 ],
                 "summary": "Get basketProduct list",
                 "parameters": [
@@ -498,7 +498,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "usebasketr"
+                    "basket"
                 ],
                 "summary": "Get basket list",
                 "parameters": [
@@ -549,7 +549,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/category": {
+        "/categories": {
             "get": {
                 "description": "get category list",
                 "consumes": [
@@ -608,7 +608,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/category": {
             "post": {
                 "description": "create a new category",
                 "consumes": [
@@ -717,7 +719,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "category"
                 ],
                 "summary": "Update category",
                 "parameters": [
@@ -1487,6 +1489,31 @@ const docTemplate = `{
                     }
                 },
                 "count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.CreateBasket": {
+            "type": "object",
+            "properties": {
+                "customer_id": {
+                    "type": "string"
+                },
+                "total_sum": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.CreateBasketProduct": {
+            "type": "object",
+            "properties": {
+                "basket_id": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "quantity": {
                     "type": "integer"
                 }
             }

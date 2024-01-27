@@ -26,7 +26,7 @@
                         "name": "basket",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/models.CreateUser"
+                            "$ref": "#/definitions/models.CreateBasket"
                         }
                     }
                 ],
@@ -232,7 +232,7 @@
                         "name": "basketProduct",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/models.CreateUser"
+                            "$ref": "#/definitions/models.CreateBasketProduct"
                         }
                     }
                 ],
@@ -328,7 +328,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "basketProduct-id",
+                        "description": "basketProduct_id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -347,7 +347,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.BasketProduct"
+                            "$ref": "#/definitions/models.UpdateBasketProduct"
                         }
                     },
                     "400": {
@@ -429,7 +429,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "usbasketProducter"
+                    "basketProduct"
                 ],
                 "summary": "Get basketProduct list",
                 "parameters": [
@@ -490,7 +490,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "usebasketr"
+                    "basket"
                 ],
                 "summary": "Get basket list",
                 "parameters": [
@@ -541,7 +541,7 @@
                 }
             }
         },
-        "/category": {
+        "/categories": {
             "get": {
                 "description": "get category list",
                 "consumes": [
@@ -600,7 +600,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/category": {
             "post": {
                 "description": "create a new category",
                 "consumes": [
@@ -709,7 +711,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "category"
                 ],
                 "summary": "Update category",
                 "parameters": [
@@ -1479,6 +1481,31 @@
                     }
                 },
                 "count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.CreateBasket": {
+            "type": "object",
+            "properties": {
+                "customer_id": {
+                    "type": "string"
+                },
+                "total_sum": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.CreateBasketProduct": {
+            "type": "object",
+            "properties": {
+                "basket_id": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "quantity": {
                     "type": "integer"
                 }
             }

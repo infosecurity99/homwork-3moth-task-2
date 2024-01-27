@@ -3,9 +3,10 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"github.com/google/uuid"
 	"test/api/models"
 	"test/storage"
+
+	"github.com/google/uuid"
 )
 
 type productRepo struct {
@@ -61,30 +62,30 @@ func (p productRepo) GetList(request models.GetListRequest) (models.ProductRespo
 		count             = 0
 	)
 
-	countQuery = `select count(1) from products `
+	countQuery = `SELECT COUNT(1) FROM products `
 
 	if search != "" {
-		countQuery += fmt.Sprintf(` where (name ilike '%%%s%%' or 
-			CAST(price AS TEXT) ilike '%%%s%%' or CAST(quantity AS TEXT) ilike '%%%s%%')`, search, search, search)
+		countQuery += fmt.Sprintf(`WHERE (name ILIKE '%%%s%%' OR 
+			CAST(price AS TEXT) ILIKE '%%%s%%' OR CAST(quantity AS TEXT) ILIKE '%%%s%%')`, search, search, search)
 	}
 
 	if err := p.db.QueryRow(countQuery).Scan(&count); err != nil {
-		fmt.Println("error is while scanning count", err.Error())
+		fmt.Println("error while scanning count", err.Error())
 		return models.ProductResponse{}, err
 	}
 
-	query = `select id, name, price, original_price, quantity, category_id from products `
+	query = `SELECT id, name, price, original_price, quantity, category_id FROM products `
 
 	if search != "" {
-		query += fmt.Sprintf(` where (name ilike '%%%s%%' or 
-			CAST(price AS TEXT) ilike '%%%s%%' or CAST(quantity AS TEXT) ilike '%%%s%%')`, search, search, search)
+		query += fmt.Sprintf(`WHERE (name ILIKE '%%%s%%' OR 
+			CAST(price AS TEXT) ILIKE '%%%s%%' OR CAST(quantity AS TEXT) ILIKE '%%%s%%')`, search, search, search)
 	}
 
 	query += ` LIMIT $1 OFFSET $2`
 
 	rows, err := p.db.Query(query, request.Limit, offset)
 	if err != nil {
-		fmt.Println("error is while selecting products", err.Error())
+		fmt.Println("error while selecting products", err.Error())
 		return models.ProductResponse{}, err
 	}
 
@@ -97,7 +98,7 @@ func (p productRepo) GetList(request models.GetListRequest) (models.ProductRespo
 			&product.OriginalPrice,
 			&product.Quantity,
 			&product.CategoryID); err != nil {
-			fmt.Println("error is while scanning products", err.Error())
+			fmt.Println("error while scanning products", err.Error())
 			return models.ProductResponse{}, err
 		}
 		products = append(products, product)
@@ -105,7 +106,7 @@ func (p productRepo) GetList(request models.GetListRequest) (models.ProductRespo
 	return models.ProductResponse{
 		Product: products,
 		Count:   count,
-	}, err
+	}, nil
 }
 
 func (p productRepo) Update(product models.UpdateProduct) (string, error) {
