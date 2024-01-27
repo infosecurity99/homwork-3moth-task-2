@@ -39,10 +39,10 @@ func New(store storage.IStorage) *gin.Engine {
 //finish basket
 	r.POST("/basket", h.CreateBasket)
 	r.GET("/basket/:id", h.GetBasket)
-	r.GET("/basket", h.GetBasketList)
+	r.GET("/baskets", h.GetBasketList)
 	r.PUT("basket/:id", h.UpdateBasket)
 	r.DELETE("basket/:id", h.DeleteBasket)
-
+//finish basketproduct
 	r.POST("/basketProduct", h.CreateBasketProduct)
 	r.GET("/basketProduct/:id", h.GetBasketProduct)
 	r.GET("/basketProducts", h.GetBasketProductList)

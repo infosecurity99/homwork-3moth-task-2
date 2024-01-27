@@ -3,9 +3,10 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"github.com/google/uuid"
 	"test/api/models"
 	"test/storage"
+
+	"github.com/google/uuid"
 )
 
 type userRepo struct {
@@ -43,13 +44,22 @@ func (u *userRepo) GetByID(pKey models.PrimaryKey) (models.User, error) {
 	user := models.User{}
 
 	query := `
-		select id, full_name, phone, cash from users where id = $1 and user_role = 'customer'
-`
+        SELECT u.id, u.full_name, u.phone, u.password, u.user_role, u.cash,
+               COALESCE(SUM(b.total_sum), 0) AS total_cash_spent
+        FROM users u
+        LEFT JOIN baskets b ON u.id = b.customer_id
+        WHERE u.id = $1
+        GROUP BY u.id, u.full_name, u.phone, u.password, u.user_role, u.cash;
+    `
+
 	if err := u.db.QueryRow(query, pKey.ID).Scan(
 		&user.ID,
 		&user.FullName,
 		&user.Phone,
+		&user.Password,
+		&user.UserType,
 		&user.Cash,
+		&user.UserType,
 	); err != nil {
 		fmt.Println("error while scanning user", err.Error())
 		return models.User{}, err
@@ -69,10 +79,10 @@ func (u *userRepo) GetList(request models.GetListRequest) (models.UsersResponse,
 	)
 
 	countQuery = `
-		SELECT count(1) from users where user_role = 'customer' `
+		SELECT count(1) FROM users WHERE user_role = 'customer'`
 
 	if search != "" {
-		countQuery += fmt.Sprintf(` and (phone ilike '%%%s%%' or full_name ilike '%%%s%%')`, search, search)
+		countQuery += fmt.Sprintf(` AND (phone ILIKE '%%%s%%' OR full_name ILIKE '%%%s%%')`, search, search)
 	}
 
 	if err := u.db.QueryRow(countQuery).Scan(&count); err != nil {
@@ -81,20 +91,21 @@ func (u *userRepo) GetList(request models.GetListRequest) (models.UsersResponse,
 	}
 
 	query = `
-		SELECT id, full_name, phone, cash
-			FROM users
-			    WHERE user_role = 'customer'
-			    `
+		SELECT u.id, u.full_name, u.phone, u.cash, COALESCE(SUM(b.total_sum), 0) AS total_cash_spent
+		FROM users u
+		LEFT JOIN baskets b ON u.id = b.customer_id
+		WHERE u.user_role = 'customer'
+	`
 
 	if search != "" {
-		query += fmt.Sprintf(` and (phone ilike '%%%s%%' or full_name ilike '%%%s%%') `, search, search)
+		query += fmt.Sprintf(` AND (u.phone ILIKE '%%%s%%' OR u.full_name ILIKE '%%%s%%')`, search, search)
 	}
 
-	query += ` LIMIT $1 OFFSET $2`
+	query += ` GROUP BY u.id, u.full_name, u.phone, u.cash LIMIT $1 OFFSET $2`
 
 	rows, err := u.db.Query(query, request.Limit, offset)
 	if err != nil {
-		fmt.Println("error while query rows", err.Error())
+		fmt.Println("error while querying rows", err.Error())
 		return models.UsersResponse{}, err
 	}
 
@@ -106,6 +117,7 @@ func (u *userRepo) GetList(request models.GetListRequest) (models.UsersResponse,
 			&user.FullName,
 			&user.Phone,
 			&user.Cash,
+			&user.UserType,
 		); err != nil {
 			fmt.Println("error while scanning row", err.Error())
 			return models.UsersResponse{}, err

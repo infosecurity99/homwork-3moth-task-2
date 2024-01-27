@@ -64,7 +64,7 @@ func (h Handler) GetCategory(c *gin.Context) {
 	handleResponse(c, "", http.StatusOK, category)
 }
 // GetCategoryList godoc
-// @Router       /category [GET]
+// @Router       /categories [GET]
 // @Summary      Get category list
 // @Description  get category list
 // @Tags         category
@@ -118,8 +118,8 @@ func (h Handler) GetCategoryList(c *gin.Context) {
 // @Router       /category/{id} [PUT]
 // @Summary      Update category
 // @Description  update category
-// @Tags         
-// @Accept       jsoncategory
+// @Tags         category
+// @Accept       json
 // @Produce      json
 // @Param 		 id path string true "category_id"
 // @Param        category body models.UpdateCategory true "category"

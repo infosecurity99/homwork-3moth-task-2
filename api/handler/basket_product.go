@@ -14,7 +14,7 @@ import (
 // @Tags         basketProduct
 // @Accept       json
 // @Produce      json
-// @Param        basketProduct body models.CreateUser false "basketProduct"
+// @Param        basketProduct body models.CreateBasketProduct false "basketProduct"
 // @Success      201  {object}  models.BasketProduct
 // @Failure      400  {object}  models.Response
 // @Failure      404  {object}  models.Response
@@ -70,13 +70,13 @@ func (h Handler) GetBasketProduct(c *gin.Context) {
 // @Router       /basketProducts [GET]
 // @Summary      Get basketProduct list
 // @Description  get basketProduct list
-// @Tags         usbasketProducter
+// @Tags         basketProduct
 // @Accept       json
 // @Produce      json
 // @Param        page query string false "page"
 // @Param 		 limit query string false "limit"
 // @Param 		 search query string false "search"
-// @Success      200  {object}  models.BasketProductsResponse
+// @Success      200  {object}  models.BasketProductResponse
 // @Failure      400  {object}  models.Response
 // @Failure      404  {object}  models.Response
 // @Failure      500  {object}  models.Response
@@ -118,9 +118,9 @@ func (h Handler) GetBasketProductList(c *gin.Context) {
 // @Tags         basketProduct
 // @Accept       json
 // @Produce      json
-// @Param 		 id path string true "basketProduct-id"
+// @Param 		 id path string true "basketProduct_id"
 // @Param        basketProduct body models.UpdateBasketProduct true "basketProduct"
-// @Success      200  {object}  models.BasketProduct
+// @Success      200  {object}  models.UpdateBasketProduct
 // @Failure      400  {object}  models.Response
 // @Failure      404  {object}  models.Response
 // @Failure      500  {object}  models.Response
